@@ -113,9 +113,11 @@ in an HTTP response.
 
 _Type_: `object`
 
-Options have the same shape as the return value. They can be passed either as an
-argument to [`errorHttpResponse()`](#errorhttpresponseerror-options) or be set
-to `error.http`.
+The options and the return value have the same shape
+([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)). Options can be passed
+either as an argument to
+[`errorHttpResponse()`](#errorhttpresponseerror-options) or be set to
+`error.http`.
 
 Options are validated: an exception is thrown if their syntax is invalid.
 
