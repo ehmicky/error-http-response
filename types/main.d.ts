@@ -84,7 +84,7 @@ export interface HttpResponse extends Options {
  * // }
  * ```
  */
-export default function errorHttpResponse<OptionsArg extends Options>(
+export default function errorHttpResponse(
   error: unknown,
-  options?: OptionsArg,
-): OptionsArg & HttpResponse
+  options?: Options,
+): HttpResponse

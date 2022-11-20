@@ -67,13 +67,3 @@ expectType<string | undefined>(httpResponse.instance)
 expectType<string>(httpResponse.stack)
 expectType<object | undefined>(httpResponse.extra)
 expectError(httpResponse.extra?.prop)
-
-expectType<''>(errorHttpResponse(error, { type: '' as const }).type)
-expectType<200>(errorHttpResponse(error, { status: 200 as const }).status)
-expectType<''>(errorHttpResponse(error, { title: '' as const }).title)
-expectType<''>(errorHttpResponse(error, { detail: '' as const }).detail)
-expectType<''>(errorHttpResponse(error, { instance: '' as const }).instance)
-expectType<''>(errorHttpResponse(error, { stack: '' as const }).stack)
-expectType<true>(
-  errorHttpResponse(error, { extra: { prop: true } as const }).extra.prop,
-)
