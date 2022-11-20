@@ -78,7 +78,7 @@ const object = errorHttpResponse(error, {
 //   instance: '/users/62',
 //   stack: `AuthError: Could not authenticate.
 //     at ...`,
-//   extra: { userId: 62, isHttp: true },
+//   extra: { isHttp: true, userId: 62 },
 // }
 ```
 
@@ -98,17 +98,26 @@ not `require()`.
 
 ## errorHttpResponse(error, options?)
 
-`value` `any`\
+`value` `Error | any`\
 `options` [`Options?`](#options)\
-_Return value_: [`object`](#return-value)
+_Return value_: `HttpResponse`
 
 Converts `error` to a plain object
 ([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807), "problem details") to use
 in an HTTP response.
 
+`error` should be an `Error` instance, but invalid errors are automatically
+[normalized](https://github.com/ehmicky/normalize-exception).
+
 ## Options
 
 _Type_: `object`
+
+Options have the same shape as the return value. They can be passed either as an
+argument to [`errorHttpResponse()`](#errorhttpresponseerror-options) or be set
+to `error.http`.
+
+Options are validated: an exception is thrown if their syntax is invalid.
 
 ### type
 
@@ -116,7 +125,7 @@ _Type_: `urlString`\
 _Default_: `undefined`
 
 URI identifying and documenting the error class. Ideally, each error class
-[should set one](#configuration).
+should set one.
 
 ### status
 
