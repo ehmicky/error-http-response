@@ -1,10 +1,16 @@
 /**
- * Options of `error-http-response`
+ * The options and the return value have the same shape
+ * ([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)). Options can be passed
+ * either as an argument to
+ * [`errorHttpResponse()`](#errorhttpresponseerror-options) or be set to
+ * `error.http`.
+ *
+ * Options are validated: an exception is thrown if their syntax is invalid.
  */
 export interface Options {
   /**
-   * URI identifying and documenting the error class. Ideally, each error class
-   * [should set one](https://github.com/ehmicky/modern-errors/README.md#plugin-options).
+   * URI identifying and documenting the error class.
+   * Ideally, each error class should set one.
    *
    * @default undefined
    */
@@ -65,22 +71,24 @@ export interface HttpResponse extends Options {
 }
 
 /**
- * Converts `error` to a plain object to use in an HTTP response.
- * Its shape follows [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)
- * ("problem details").
+ * Converts `error` to a plain object
+ * ([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807), "problem details") to
+ * use in an HTTP response.
+ *
+ * `error` should be an `Error` instance, but invalid errors are automatically
+ * [normalized](https://github.com/ehmicky/normalize-exception).
  *
  * @example
  * ```js
- * const object = BaseError.httpResponse(error)
+ * const error = new AuthError('Could not authenticate.')
+ * error.userId = 62
+ * const object = errorHttpResponse(error)
  * // {
- * //   type: 'https://example.com/probs/auth',
- * //   status: 401,
  * //   title: 'AuthError',
  * //   detail: 'Could not authenticate.',
- * //   instance: '/users/62',
  * //   stack: `AuthError: Could not authenticate.
  * //     at ...`,
- * //   extra: { userId: 62 },
+ * //   extra: { userId: 62 }
  * // }
  * ```
  */
