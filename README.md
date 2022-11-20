@@ -8,14 +8,50 @@
 
 Create HTTP error responses.
 
-Work in progress!
-
-# Features
+This converts errors to plain objects
+([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807), "problem details") to use
+in an HTTP response.
 
 # Example
 
+<!-- eslint-disable fp/no-class, fp/no-this, fp/no-mutation -->
+
+```js
+class AuthError extends Error {
+  constructor(...args) {
+    super(...args)
+    this.problemDetails = {
+      type: 'https://example.com/probs/auth',
+      status: 401,
+    }
+  }
+}
+```
+
+<!-- eslint-disable fp/no-mutating-assign -->
+
+```js
+const error = new AuthError('Could not authenticate.')
+Object.assign(error.problemDetails, {
+  instance: '/users/62',
+  extra: { userId: 62 },
+})
+```
+
 ```js
 import errorHttpResponse from 'error-http-response'
+
+const object = errorHttpResponse(error)
+// {
+//   type: 'https://example.com/probs/auth',
+//   status: 401,
+//   title: 'AuthError',
+//   detail: 'Could not authenticate.',
+//   instance: '/users/62',
+//   stack: `AuthError: Could not authenticate.
+//     at ...`,
+//   extra: { userId: 62 },
+// }
 ```
 
 # Install
