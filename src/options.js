@@ -1,12 +1,15 @@
 import isPlainObj from 'is-plain-obj'
 
 // Normalize, validate and merge options.
-// Options can be set directly, or on `error.problemDetails`.
-export const getOptions = function (problemDetails, options) {
-  return {
-    ...normalizeOptions(problemDetails),
-    ...normalizeOptions(options),
-  }
+// Options can be either passed as argument, or set on `error.http`.
+//  - This allows setting options either at instantiation time or in the
+//    top-level error handler
+//  - `error.http` has priority since it is more specific
+export const getOptions = function (http, options) {
+  const optionsA = normalizeOptions(options)
+  const httpA = normalizeOptions(http)
+  const extra = mergeExtra(optionsA.extra, httpA.extra)
+  return { ...optionsA, ...httpA, extra }
 }
 
 const normalizeOptions = function (options = {}) {
@@ -88,4 +91,16 @@ const VALIDATORS = {
   instance: validateURI,
   stack: validateString,
   extra: validateObject,
+}
+
+const mergeExtra = function (optionsExtra, httpExtra) {
+  if (optionsExtra === undefined) {
+    return httpExtra
+  }
+
+  if (httpExtra === undefined) {
+    return optionsExtra
+  }
+
+  return { ...optionsExtra, ...httpExtra }
 }

@@ -7,9 +7,9 @@ import { getOptions } from './options.js'
 // Object keys order is significant.
 export default function errorHttpResponse(error, options) {
   // eslint-disable-next-line no-unused-vars
-  const { name, message, stack, cause, errors, problemDetails, ...errorProps } =
+  const { name, message, stack, cause, errors, http, ...errorProps } =
     normalizeException(error)
-  const optionsA = getOptions(problemDetails, options)
+  const optionsA = getOptions(http, options)
   return safeJsonValue({
     ...getOptionalProp(optionsA, 'type'),
     ...getOptionalProp(optionsA, 'status'),

@@ -20,7 +20,7 @@ in an HTTP response.
 class AuthError extends Error {
   constructor(...args) {
     super(...args)
-    this.problemDetails = {
+    this.http = {
       type: 'https://example.com/probs/auth',
       status: 401,
     }
@@ -32,7 +32,7 @@ class AuthError extends Error {
 
 ```js
 const error = new AuthError('Could not authenticate.')
-Object.assign(error.problemDetails, {
+Object.assign(error.http, {
   instance: '/users/62',
   extra: { userId: 62 },
 })
