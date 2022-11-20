@@ -14,6 +14,28 @@ in an HTTP response.
 
 # Example
 
+The main HTTP response fields are automatically set using
+[`error.name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
+[`error.message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message)
+[`error.stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack)
+and other error properties.
+
+```js
+const error = new AuthError('Could not authenticate.')
+error.userId = 62
+const object = errorHttpResponse(error)
+// {
+//   title: 'AuthError',
+//   detail: 'Could not authenticate.',
+//   stack: `AuthError: Could not authenticate.
+//     at ...`,
+//   extra: { userId: 62 }
+// }
+```
+
+Additional fields can be explicitly set in the error class's constructor, using
+`this.http`.
+
 <!-- eslint-disable fp/no-class, fp/no-this, fp/no-mutation -->
 
 ```js
@@ -28,6 +50,8 @@ class AuthError extends Error {
 }
 ```
 
+Or on the error instance, using `error.http`.
+
 <!-- eslint-disable fp/no-mutating-assign -->
 
 ```js
@@ -38,10 +62,14 @@ Object.assign(error.http, {
 })
 ```
 
+Or as an argument.
+
 ```js
 import errorHttpResponse from 'error-http-response'
 
-const object = errorHttpResponse(error)
+const object = errorHttpResponse(error, {
+  extra: { isHttp: true },
+})
 // {
 //   type: 'https://example.com/probs/auth',
 //   status: 401,
@@ -50,7 +78,7 @@ const object = errorHttpResponse(error)
 //   instance: '/users/62',
 //   stack: `AuthError: Could not authenticate.
 //     at ...`,
-//   extra: { userId: 62 },
+//   extra: { userId: 62, isHttp: true },
 // }
 ```
 
@@ -66,30 +94,110 @@ It is an ES module and must be loaded using
 [an `import` or `import()` statement](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
 not `require()`.
 
-<!--
-This package works in Node.js >=14.18.0. It is an ES module and must be loaded
-using
-[an `import` or `import()` statement](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
-not `require()`.
--->
-
 # API
 
-## errorHttpResponse(value, options?)
+## errorHttpResponse(error, options?)
 
 `value` `any`\
 `options` [`Options?`](#options)\
 _Return value_: [`object`](#return-value)
 
-### Options
+Converts `error` to a plain object
+([RFC 7807](https://www.rfc-editor.org/rfc/rfc7807), "problem details") to use
+in an HTTP response.
 
-Object with the following properties.
+## Options
 
-### Return value
+_Type_: `object`
 
-Object with the following properties.
+### type
+
+_Type_: `urlString`\
+_Default_: `undefined`
+
+URI identifying and documenting the error class. Ideally, each error class
+[should set one](#configuration).
+
+### status
+
+_Type_: `integer`\
+_Default_: `undefined`
+
+HTTP status code.
+
+### title
+
+_Type_: `string`\
+_Default_: `error.name`
+
+Error class name.
+
+### detail
+
+_Type_: `string`\
+_Default_: `error.message`
+
+Error description.
+
+### instance
+
+_Type_: `urlString`\
+_Default_: `undefined`
+
+URI identifying the value which errored.
+
+### stack
+
+_Type_: `string`\
+_Default_: `error.stack`
+
+Error stack trace. Can be set to an empty string.
+
+### extra
+
+_Type_: `object`\
+_Default_: any additional `error` properties
+
+Additional information. This is always
+[safe to serialize as JSON](https://github.com/ehmicky/safe-json-value). Can be
+set to an empty object.
 
 # Related projects
+
+- [`modern-errors`](https://github.com/ehmicky/modern-errors): Handle errors
+  like it's 2022 🔮
+- [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http):
+  `modern-errors` plugin to create HTTP error responses
+- [`error-custom-class`](https://github.com/ehmicky/error-custom-class): Create
+  one error class
+- [`error-class-utils`](https://github.com/ehmicky/error-class-utils): Utilities
+  to properly create error classes
+- [`error-serializer`](https://github.com/ehmicky/error-serializer): Convert
+  errors to/from plain objects
+- [`normalize-exception`](https://github.com/ehmicky/normalize-exception):
+  Normalize exceptions/errors
+- [`is-error-instance`](https://github.com/ehmicky/is-error-instance): Check if
+  a value is an `Error` instance
+- [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
+  error with its `cause`
+- [`set-error-class`](https://github.com/ehmicky/set-error-class): Properly
+  update an error's class
+- [`set-error-message`](https://github.com/ehmicky/set-error-message): Properly
+  update an error's message
+- [`wrap-error-message`](https://github.com/ehmicky/wrap-error-message):
+  Properly wrap an error's message
+- [`set-error-props`](https://github.com/ehmicky/set-error-props): Properly
+  update an error's properties
+- [`set-error-stack`](https://github.com/ehmicky/set-error-stack): Properly
+  update an error's stack
+- [`error-cause-polyfill`](https://github.com/ehmicky/error-cause-polyfill):
+  Polyfill `error.cause`
+- [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error): 💣 Error
+  handler for CLI applications 💥
+- [`safe-json-value`](https://github.com/ehmicky/safe-json-value): ⛑️ JSON
+  serialization should never fail
+- [`log-process-errors`](https://github.com/ehmicky/log-process-errors): Show
+  some ❤ to Node.js process errors
 
 # Support
 
