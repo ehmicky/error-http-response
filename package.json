@@ -1,5 +1,5 @@
 {
-  "name": "template-name",
+  "name": "error-http-response",
   "version": "0.0.1",
   "type": "module",
   "exports": {
@@ -16,13 +16,13 @@
   "scripts": {
     "test": "gulp test"
   },
-  "description": "template-description",
+  "description": "Create HTTP error responses",
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://www.github.com/ehmicky/template-name",
-  "repository": "ehmicky/template-name",
+  "homepage": "https://www.github.com/ehmicky/error-http-response",
+  "repository": "ehmicky/error-http-response",
   "bugs": {
-    "url": "https://github.com/ehmicky/template-name/issues"
+    "url": "https://github.com/ehmicky/error-http-response/issues"
   },
   "author": "ehmicky <ehmicky@gmail.com> (https://github.com/ehmicky)",
   "directories": {

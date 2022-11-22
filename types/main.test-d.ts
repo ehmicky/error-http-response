@@ -1,7 +1,7 @@
-import templateName, { Options } from 'template-name'
+import errorHttpResponse, { Options } from 'error-http-response'
 import { expectType, expectAssignable } from 'tsd'
 
-expectType<object>(templateName(true))
+expectType<object>(errorHttpResponse(true))
 
-templateName(true, {})
+errorHttpResponse(true, {})
 expectAssignable<Options>({})
