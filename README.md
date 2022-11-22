@@ -209,6 +209,8 @@ set to an empty object.
   serialization should never fail
 - [`log-process-errors`](https://github.com/ehmicky/log-process-errors): Show
   some ❤ to Node.js process errors
+- [`error-http-response`](https://github.com/ehmicky/error-http-response):
+  Create HTTP error responses
 
 # Support
 
