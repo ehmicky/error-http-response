@@ -5,7 +5,7 @@ import { getOptions } from './options.js'
 
 // Turn `error` into a RFC 7807 problem details object.
 // Object keys order is significant.
-export default function errorHttpResponse(error, options) {
+const errorHttpResponse = (error, options) => {
   // eslint-disable-next-line no-unused-vars
   const { name, message, stack, cause, errors, http, ...errorProps } =
     normalizeException(error)
@@ -21,15 +21,16 @@ export default function errorHttpResponse(error, options) {
   }).value
 }
 
-const getOptionalProp = function (options, optName) {
-  return options[optName] === undefined ? {} : { [optName]: options[optName] }
-}
+export default errorHttpResponse
 
-const getDefaultedProp = function (options, optName, defaultValue) {
-  return { [optName]: options[optName] ?? defaultValue }
-}
+const getOptionalProp = (options, optName) =>
+  options[optName] === undefined ? {} : { [optName]: options[optName] }
 
-const getExtra = function ({ extra }, errorProps) {
+const getDefaultedProp = (options, optName, defaultValue) => ({
+  [optName]: options[optName] ?? defaultValue,
+})
+
+const getExtra = ({ extra }, errorProps) => {
   if (extra !== undefined) {
     return { extra }
   }

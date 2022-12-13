@@ -5,14 +5,14 @@ import isPlainObj from 'is-plain-obj'
 //  - This allows setting options either at instantiation time or in the
 //    top-level error handler
 //  - `error.http` has priority since it is more specific
-export const getOptions = function (http, options) {
+export const getOptions = (http, options) => {
   const optionsA = normalizeOptions(options)
   const httpA = normalizeOptions(http)
   const extra = mergeExtra(optionsA.extra, httpA.extra)
   return { ...optionsA, ...httpA, extra }
 }
 
-const normalizeOptions = function (options = {}) {
+const normalizeOptions = (options = {}) => {
   if (!isPlainObj(options)) {
     throw new TypeError(`It must be a plain object: ${options}`)
   }
@@ -21,7 +21,7 @@ const normalizeOptions = function (options = {}) {
   return options
 }
 
-const validateOption = function ([optName, optValue]) {
+const validateOption = ([optName, optValue]) => {
   const validator = VALIDATORS[optName]
 
   if (validator === undefined) {
@@ -35,7 +35,7 @@ Available options: ${availableOpts}`)
   }
 }
 
-const validateStatus = function (optValue, optName) {
+const validateStatus = (optValue, optName) => {
   if (!Number.isInteger(optValue)) {
     throw new TypeError(`"${optName}" must be an integer: ${optValue}`)
   }
@@ -56,7 +56,7 @@ const HTTP_STATUSES = new Set([
 ])
 /* eslint-enable no-magic-numbers */
 
-const validateURI = function (optValue, optName) {
+const validateURI = (optValue, optName) => {
   validateString(optValue, optName)
 
   try {
@@ -71,13 +71,13 @@ const validateURI = function (optValue, optName) {
 
 const EXAMPLE_ORIGIN = 'https://example.com'
 
-const validateString = function (optValue, optName) {
+const validateString = (optValue, optName) => {
   if (typeof optValue !== 'string') {
     throw new TypeError(`"${optName}" must be a string: ${optValue}`)
   }
 }
 
-const validateObject = function (optValue, optName) {
+const validateObject = (optValue, optName) => {
   if (!isPlainObj(optValue)) {
     throw new TypeError(`"${optName}" must be a plain object: ${optValue}`)
   }
@@ -93,7 +93,7 @@ const VALIDATORS = {
   extra: validateObject,
 }
 
-const mergeExtra = function (optionsExtra, httpExtra) {
+const mergeExtra = (optionsExtra, httpExtra) => {
   if (optionsExtra === undefined) {
     return httpExtra
   }
