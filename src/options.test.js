@@ -1,7 +1,7 @@
 import test from 'ava'
+import errorHttpResponse from 'error-http-response'
 import { each } from 'test-each'
 
-import errorHttpResponse from 'error-http-response'
 
 const error = new Error('test')
 error.http = { title: 'title' }
