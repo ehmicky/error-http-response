@@ -4,7 +4,6 @@ import errorHttpResponse, {
 } from 'error-http-response'
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
-
 const error = new Error('')
 const httpResponse = errorHttpResponse(error)
 
