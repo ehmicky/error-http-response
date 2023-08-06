@@ -42,7 +42,10 @@
   ],
   "license": "MIT",
   "homepage": "https://www.github.com/ehmicky/error-http-response",
-  "repository": "ehmicky/error-http-response",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehmicky/error-http-response.git"
+  },
   "bugs": {
     "url": "https://github.com/ehmicky/error-http-response/issues"
   },
