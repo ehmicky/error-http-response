@@ -60,6 +60,7 @@ const validateURI = (optValue, optName) => {
   validateString(optValue, optName)
 
   try {
+    // TODO: use URL.parse() after dropping support for Node <21.1.0
     // eslint-disable-next-line no-new
     new URL(optValue, EXAMPLE_ORIGIN)
   } catch (error) {
